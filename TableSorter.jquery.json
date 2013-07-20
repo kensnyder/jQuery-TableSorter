@@ -1,0 +1,29 @@
+{
+  "name": "jQuery-TableSorter",
+  "title": "***",
+  "description": "***",
+  "version": "0.1.0-pre",
+  "homepage": "https://github.com/kensnyder/jQuery-TableSorter",
+  "author": {
+    "name": "Ken Snyder",
+    "email": "kendsnyder@gmail.com",
+    "url": "http://kendsnyder.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/kensnyder/jQuery-TableSorter.git"
+  },
+  "bugs": "https://github.com/kensnyder/jQuery-TableSorter/issues",
+  "constructor_name": "TableSorter",
+  "method": "tablesorter",
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/kensnyder/jQuery-TableSorter/blob/master/License"
+    }
+  ],
+  "dependencies": {
+    "jquery": "1.5"
+  },
+  "keywords": []
+}
