@@ -206,27 +206,6 @@ module.exports = function(grunt) {
 		replaceInFile('./package.json', /("version"\s*:\s*").+?"/, '$1'+pkg.version+'"');
 	});
 	
-	// $ grunt scaffold --constructor_name=CONSTRUCTOR --method=METHOD
-	grunt.registerTask('scaffold', 'Init a new plugin by replacing all the instances of CONSTRUCTOR and METHOD with the given values', function() {
-		var constructor = grunt.option('constructor_name');
-		var method = grunt.option('method');		
-		// replace CONSTRUCTOR and METHOD strings in files
-		replaceInFile('./src/CONSTRUCTOR.js', /CONSTRUCTOR/g, constructor);
-		replaceInFile('./src/CONSTRUCTOR.js', /METHOD/g, method);
-		replaceInFile('./test/CONSTRUCTOR.html', /CONSTRUCTOR/g, constructor);
-		replaceInFile('./CONSTRUCTOR.jquery.json', /CONSTRUCTOR/g, constructor);
-		replaceInFile('./CONSTRUCTOR.jquery.json', /METHOD/g, method);
-		replaceInFile('./Gruntfile.js', 'CONSTRUCTOR.jquery.json', constructor);
-		// rename files that have CONSTRUCTOR in them
-		rename('./src/CONSTRUCTOR.css', './src/' + constructor + '.css');
-		rename('./src/CONSTRUCTOR.js', './src/' + constructor + '.js');
-		rename('./test/CONSTRUCTOR.html', './test/' + constructor + '.html');
-		rename('./test/CONSTRUCTOR_test.js', './test/' + constructor + '_test.js');
-		rename('./CONSTRUCTOR.jquery.json', './' + constructor + '.jquery.json');
-		// remind me of what is left to do
-		console.log('TODO: fill out name in package.json; update title and description in ' + constructor + '.jquery.json; create yui logo if desired');
-	});
-
 	// Default task.
 	grunt.registerTask('default', ['jshint', 'qunit', 'clean:init', 'copy:css', 'concat:dist', 'updateVersions', 'cssmin', 'uglify', 'copy:compress', 'compress', 'clean:compress', 'yuidoc', 'logo', 'readme']);
 
