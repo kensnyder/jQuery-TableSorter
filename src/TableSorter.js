@@ -64,7 +64,8 @@
 		 * @param {Object} [options=TableSorter.defaultOptions] See {{#crossLink "TableSorter/options:property"}}options property{{/crossLink}} for full documentation
 		 */
 		initialize: function($element, options) {
-						
+			this.$table = $($element);
+			this.options = $.extend({}, $.TableSorter.defaultOptions, options || {});		
 						
 			/**
 			 * Fired after initialization
