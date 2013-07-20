@@ -1,7 +1,7 @@
 {
   "name": "jQuery-TableSorter",
-  "title": "***",
-  "description": "***",
+  "title": "jQuery Table Sorter",
+  "description": "High performance table sort and filter",
   "version": "0.1.0-pre",
   "homepage": "https://github.com/kensnyder/jQuery-TableSorter",
   "author": {
