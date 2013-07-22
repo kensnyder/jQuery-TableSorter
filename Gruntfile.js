@@ -107,8 +107,8 @@ module.exports = function(grunt) {
 			}
 		},
 		watch: {
-			files: ['./test/*','./src/*','./libs/*'],
-			tasks: ['./Gruntfile.js','jshint','qunit']
+			files: ['./test/*','./src/*','./libs/*','./Gruntfile.js','./jshint.conf.json'],
+			tasks: ['jshint','qunit']
 		}		
 	});
 
