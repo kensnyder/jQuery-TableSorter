@@ -1,21 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>src/TableSorter.js - jQuery-TableSorter</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+            
+                <h1><img src="../assets/css/logo.png" title="jQuery-TableSorter"></h1>
+            
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: 0.1.0-pre</em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+    <h2 class="off-left">APIs</h2>
+    <div id="api-tabview" class="tabview">
+        <ul class="tabs">
+            <li><a href="#api-classes">Classes</a></li>
+            <li><a href="#api-modules">Modules</a></li>
+        </ul>
+
+        <div id="api-tabview-filter">
+            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+        </div>
+
+        <div id="api-tabview-panel">
+            <ul id="api-classes" class="apis classes">
+            
+                <li><a href="../classes/TableSorter.html">TableSorter</a></li>
+            
+            </ul>
+
+            <ul id="api-modules" class="apis modules">
+            
+                <li><a href="../modules/jQuery.html">jQuery</a></li>
+            
+            </ul>
+        </div>
+    </div>
+</div>
+
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+        Show:
+        <label for="api-show-inherited">
+            <input type="checkbox" id="api-show-inherited" checked>
+            Inherited
+        </label>
+
+        <label for="api-show-protected">
+            <input type="checkbox" id="api-show-protected">
+            Protected
+        </label>
+
+        <label for="api-show-private">
+            <input type="checkbox" id="api-show-private">
+            Private
+        </label>
+        <label for="api-show-deprecated">
+            <input type="checkbox" id="api-show-deprecated">
+            Deprecated
+        </label>
+
+    </div>
+
+
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+                        <h1 class="file-heading">File: src/TableSorter.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
 (function (factory) {
 	// AMD compatibility
 	// https://github.com/umdjs/umd/blob/6c10fc0af1e1692cf430c9eb7f530d6b5a5d758b/jqueryPlugin.js
-	if (typeof define === 'function' && define.amd) {
+	if (typeof define === &#x27;function&#x27; &amp;&amp; define.amd) {
 		// AMD environment
-		define(['jquery'], factory);
+		define([&#x27;jquery&#x27;], factory);
 	} else {
 		// Browser environment
 		factory(jQuery);
 	}
 }(function($) {
-	"use strict";
+	&quot;use strict&quot;;
 	/**
 	 * @module jQuery
 	 */
 	
 	function getText(node) {
-		return node ? (node.innerText || node.textContent || '') : '';
+		return node ? (node.innerText || node.textContent || &#x27;&#x27;) : &#x27;&#x27;;
 	}
 	
 	// Our true constructor function. See jQuery.TableSorter.prototype.initialize for documentation
@@ -24,22 +114,22 @@
 	};
 	/**
 	 * Default options. Change these to globally change the default options
-	 * See {{#crossLink "TableSorter/constructor:method"}}constructor{{/crossLink}} for documentation on each option
+	 * See {{#crossLink &quot;TableSorter/constructor:method&quot;}}constructor{{/crossLink}} for documentation on each option
 	 * @property {Object} defaultOptions
 	 * @static
 	*/
 	$.TableSorter.defaultOptions = {
 		zebra: false,
-		thead: 'tr:eq(0)',
-		headings: 'th',
-		rows: 'tr:gt(0)'
+		thead: &#x27;tr:eq(0)&#x27;,
+		headings: &#x27;th&#x27;,
+		rows: &#x27;tr:gt(0)&#x27;
 	};
 	$.TableSorter.prototype = {
 		/**
 		 * The current options. Starts with value given in constructor
 		 * @property {Object} options
 		 *   @param 
-		 *   @param {Function} [options.onInitialize]  Add a {{#crossLink "TableSorter/Initialize:event"}}Initialize event{{/crossLink}}
+		 *   @param {Function} [options.onInitialize]  Add a {{#crossLink &quot;TableSorter/Initialize:event&quot;}}Initialize event{{/crossLink}}
 		 *   @example
 	
 	
@@ -55,17 +145,17 @@
 		 * @example
 
 	// Instantiate the OOP way
-	var instance = new $.TableSorter('selector', options)
+	var instance = new $.TableSorter(&#x27;selector&#x27;, options)
 		
 	// Instantiate the jQuery way
-	$('selector').tablesorter(options);
+	$(&#x27;selector&#x27;).tablesorter(options);
 	// call methods on the instance
-	$('selector').tablesorter('method', arg1, arg2);
+	$(&#x27;selector&#x27;).tablesorter(&#x27;method&#x27;, arg1, arg2);
 	// initialize and get back instance
-	var instance = $('selector').tablesorter('getInstance');
+	var instance = $(&#x27;selector&#x27;).tablesorter(&#x27;getInstance&#x27;);
 
 		 * @param {String|jQuery|HTMLElement} $element  The selector, jQuery object, or Element to make sortable (may be a table or any other element)
-		 * @param {Object} [options=TableSorter.defaultOptions] See {{#crossLink "TableSorter/options:property"}}options property{{/crossLink}} for full documentation
+		 * @param {Object} [options=TableSorter.defaultOptions] See {{#crossLink &quot;TableSorter/options:property&quot;}}options property{{/crossLink}} for full documentation
 		 */
 		initialize: function($element, options) {
 			this.$table = $($element);
@@ -73,7 +163,7 @@
 				return;
 			}
 			this.options = $.extend({}, $.TableSorter.defaultOptions, options || {});
-			this.$placeholder = $('<div />');
+			this.$placeholder = $(&#x27;&lt;div /&gt;&#x27;);
 			this.filters = {};
 			this._index();
 			/**
@@ -88,7 +178,7 @@
 			 */						
 		},
 		/**
-		 * Get this instance. Useful for jQuery-style usage:  var instance = $('input').tablesorter(options).tablesorter('getInstance')
+		 * Get this instance. Useful for jQuery-style usage:  var instance = $(&#x27;input&#x27;).tablesorter(options).tablesorter(&#x27;getInstance&#x27;)
 		 * @method getInstance
 		 * @return {TableSorter}
 		 */
@@ -164,11 +254,11 @@
 			if (this._valueCache.length === 0) {
 				this._collectValues();
 			}
-			if (typeof th == 'string') {
+			if (typeof th == &#x27;string&#x27;) {
 				th = parseInt(th, 10);
 			}
-			key = (typeof th == 'number' ? 'column' : 'heading');
-			for (var i = 0, len = this._valueCache.length; i < len; i++) {
+			key = (typeof th == &#x27;number&#x27; ? &#x27;column&#x27; : &#x27;heading&#x27;);
+			for (var i = 0, len = this._valueCache.length; i &lt; len; i++) {
 				if (this._valueCache[i][key] === th) {
 					return this._valueCache[i].values;
 				}
@@ -182,7 +272,7 @@
 		 * @return {String}  The datatype specified in the th attribute data-datatype (string|number)
 		 */
 		getDatatype: function(th) {
-			return th.getAttribute('data-datatype') || 'string';
+			return th.getAttribute(&#x27;data-datatype&#x27;) || &#x27;string&#x27;;
 		},
 		/**
 		 * Get the function needed to process values in the given column (strings or numbers)
@@ -193,7 +283,7 @@
 		getDatatypeProcessor: function(th) {
 			var type = this.getDatatype(th);
 			if (!$.TableSorter.datatypes[type]) {
-				throw new Error('Unknown datatype `' + type +'`; function not found on $.TableSorter.datatypes.' + type + '.');
+				throw new Error(&#x27;Unknown datatype &#x60;&#x27; + type +&#x27;&#x60;; function not found on $.TableSorter.datatypes.&#x27; + type + &#x27;.&#x27;);
 			}
 			return $.TableSorter.datatypes[type];
 		},
@@ -207,14 +297,14 @@
 		getCollector: function(th, idx) {
 			var type, arg;
 			for (type in $.TableSorter.collectors) {
-				arg = th.getAttribute('data-'+type);
+				arg = th.getAttribute(&#x27;data-&#x27;+type);
 				if (arg) {
 					break;
 				}
 			}
 			if (!arg) {
 				arg = idx + 1;
-				type = 'column';
+				type = &#x27;column&#x27;;
 			}
 			return function(i, tr) {
 				return $.TableSorter.collectors[type](i, tr, arg);
@@ -228,17 +318,17 @@
 		_collectValues: function() {
 			var c, clen, r, rlen, thIdx = 0, th, values, processor, collector;
 			var compare = function(a, b) {
-				return (a.val === b.val) ? 0 : (a.val > b.val ? 1 : -1);
+				return (a.val === b.val) ? 0 : (a.val &gt; b.val ? 1 : -1);
 			};			
 			var theadChildren = this.$thead.children();			
-			for (c = 0, clen = theadChildren.length; c < clen; c++) {
+			for (c = 0, clen = theadChildren.length; c &lt; clen; c++) {
 				th = theadChildren[c];
 				if (th === this.headings[thIdx]) {
 					thIdx++;
 					processor = this.getDatatypeProcessor(th);
 					collector = this.getCollector(th, c);
 					values = [];
-					for (r = 0, rlen = this.rows.length; r < rlen; r++) {
+					for (r = 0, rlen = this.rows.length; r &lt; rlen; r++) {
 						values.push({
 							tr: this.rows[r],
 							val: processor( collector(r, this.rows[r]) )
@@ -258,13 +348,13 @@
 		sort: function(th, direction) {
 			var table, i, len, idx, resortedRows = [];
 			// 1 = ascending, -1 = descending
-			direction = direction && (/desc|-1/i).test(direction) ? -1 : 1;			
+			direction = direction &amp;&amp; (/desc|-1/i).test(direction) ? -1 : 1;			
 			// detach table element from DOM while sorting because it is faster: http://jsperf.com/to-detach-or-not-to-detach
 			this.$table.replaceWith(this.$placeholder);
 			table = this.$table.get(0);
 			// TODO: handle one or more tbodies and thead if needed?
 			var values = this.getValues(th);
-			for (i = 0, len = values.length; i < len; i++) {
+			for (i = 0, len = values.length; i &lt; len; i++) {
 				idx = (direction == 1 ? i : len - i - 1);
 				table.appendChild(values[idx].tr);
 				resortedRows[i] = values[idx].tr;
@@ -285,43 +375,43 @@
 		 * Filter out and hide rows with a pre-defined filter (signature 2)
 		 * @method filter
 		 * @param {String} name  The name of the filter defined with defineFilter()
-		 * @param {Any} [args]*  One or more arguments to pass to the filter's rule callback
+		 * @param {Any} [args]*  One or more arguments to pass to the filter&#x27;s rule callback
 		 * @return {TableSorter}
 		 */
 		filter: function(callback) {
 			var i, len, args, spec, applyWith;
-			if (typeof callback == 'string') {
+			if (typeof callback == &#x27;string&#x27;) {
 				// signature 2: named filter
 				spec = this.filters[callback];
 				if (!spec) {
-					throw new TypeError('Unknown filter `' + callback + '`. Filters must be pre-defined with defineFilter(name,spec).');
+					throw new TypeError(&#x27;Unknown filter &#x60;&#x27; + callback + &#x27;&#x60;. Filters must be pre-defined with defineFilter(name,spec).&#x27;);
 				}
 				args = [].slice.call(arguments, 1);
 				if (spec.dynamicRule) {
 					// create an applyWith array so we can avoid the slowdown of concat in each loop
 					// see http://jsperf.com/concat-inside-loop-vs-outside-loop
 					applyWith = [undefined,undefined].concat(args);
-					for (i = 0, len = this.rows.length; i < len; i++) {
+					for (i = 0, len = this.rows.length; i &lt; len; i++) {
 						applyWith[0] = i;
 						applyWith[1] = this.rows[i];
-						this.rows[i].style.display = (spec.dynamicRule.apply(null, applyWith) ? '' : 'none');
+						this.rows[i].style.display = (spec.dynamicRule.apply(null, applyWith) ? &#x27;&#x27; : &#x27;none&#x27;);
 					}
 				}
 				else {
 					// create an applyWith array so we can avoid the slowdown of concat in each loop
 					// see http://jsperf.com/concat-inside-loop-vs-outside-loop
 					applyWith = [undefined,undefined].concat(args);
-					for (i = 0, len = spec.values.length; i < len; i++) {
+					for (i = 0, len = spec.values.length; i &lt; len; i++) {
 						applyWith[0] = i;
 						applyWith[1] = spec.values[i];
-						this.rows[i].style.display = (spec.rule.apply(null, applyWith) ? '' : 'none');
+						this.rows[i].style.display = (spec.rule.apply(null, applyWith) ? &#x27;&#x27; : &#x27;none&#x27;);
 					}
 				}
 			}
 			else {
 				// signature 1: callback
-				for (i = 0, len = this.rows.length; i < len; i++) {
-					this.rows[i].style.display = (callback(i, this.rows[i]) ? '' : 'none');
+				for (i = 0, len = this.rows.length; i &lt; len; i++) {
+					this.rows[i].style.display = (callback(i, this.rows[i]) ? &#x27;&#x27; : &#x27;none&#x27;);
 				}
 			}
 			this.zebra(this.options.zebra);
@@ -330,7 +420,7 @@
 		defineFilter: function(name, spec) {
 			var i, len, applyWith, fn;
 			if (spec.column) {
-				spec.collector = ['column', spec.column];
+				spec.collector = [&#x27;column&#x27;, spec.column];
 			}
 			if ($.isArray(spec.collector)) {
 				fn = $.TableSorter.collectors[ spec.collector[0] ];
@@ -345,17 +435,17 @@
 			}
 			if (!spec.dynamicRule) {
 				spec.values = [];
-				for (i = 0, len = this.rows.length; i < len; i++) {
+				for (i = 0, len = this.rows.length; i &lt; len; i++) {
 					spec.values.push(spec.collector(i, this.rows[i]));
 				}
 				if (!spec.rule) {
 					spec.rule = $.TableSorter.rules.contains;
 				}				
-				if (typeof spec.rule == 'string' && !!$.TableSorter.rules[spec.rule]) {
+				if (typeof spec.rule == &#x27;string&#x27; &amp;&amp; !!$.TableSorter.rules[spec.rule]) {
 					spec.rule = $.TableSorter.rules[spec.rule];
 				}
-				if (typeof spec.rule != 'function') {
-					throw new TypeError('defineFilter(name, spec) - spec.rule `'+spec.rule+'` must be a function or a key in $.TableSorter.rules');
+				if (typeof spec.rule != &#x27;function&#x27;) {
+					throw new TypeError(&#x27;defineFilter(name, spec) - spec.rule &#x60;&#x27;+spec.rule+&#x27;&#x60; must be a function or a key in $.TableSorter.rules&#x27;);
 				}
 			}
 			this.filters[name] = spec;
@@ -363,7 +453,7 @@
 		/**
 		 * Paint the rows with zebra classes
 		 * @method zebra
-		 * @param {Array} cssClasses  A list of classes to repeat such as ['odd','even']
+		 * @param {Array} cssClasses  A list of classes to repeat such as [&#x27;odd&#x27;,&#x27;even&#x27;]
 		 * @return {TableSorter}
 		 * @chainable
 		 */
@@ -372,13 +462,13 @@
 				return this;
 			}
 			var mod = cssClasses.length;
-			var regex = new RegExp('\\b('+cssClasses.join('|')+')\\b', 'g');
+			var regex = new RegExp(&#x27;\\b(&#x27;+cssClasses.join(&#x27;|&#x27;)+&#x27;)\\b&#x27;, &#x27;g&#x27;);
 			var idx = 0;
-			for (var i = 0, len = this.rows.length; i < len; i++) {
-				if (this.rows[i].style.display == 'none') {
+			for (var i = 0, len = this.rows.length; i &lt; len; i++) {
+				if (this.rows[i].style.display == &#x27;none&#x27;) {
 					continue;
 				}
-				this.rows[i].className = this.rows[i].className.replace(regex, '') + (' ' + cssClasses[idx++ % mod]);
+				this.rows[i].className = this.rows[i].className.replace(regex, &#x27;&#x27;) + (&#x27; &#x27; + cssClasses[idx++ % mod]);
 			}
 			return this;
 		}
@@ -387,7 +477,7 @@
 	//
 	// static properties and methods
 	//
-	$.TableSorter.version = '%VERSION%';
+	$.TableSorter.version = &#x27;%VERSION%&#x27;;
 	
 	$.TableSorter.datatypes = {
 		string: Array.prototype.trim ? 
@@ -399,25 +489,25 @@
 			},
 		number: function(number) {
 			// parse float after removing leading characters besides digits, decimal points, and signs
-			return parseFloat(number.replace(/^[^\d\.+\-]+/, ''));
+			return parseFloat(number.replace(/^[^\d\.+\-]+/, &#x27;&#x27;));
 		},
 		date: function(dateStr) {
 			var timeParts, dateParts, match, parsers, i, len;
 			parsers = $.TableSorter.dateUtils.dateParsers;
-			for (i = 0, len = parsers.length; i < len; i++) {
+			for (i = 0, len = parsers.length; i &lt; len; i++) {
 				if ((match = dateStr.match(parsers[i].matcher))) {
 					dateParts = parsers[i].getParts(match);
 					break;
 				}
 			}
 			parsers = $.TableSorter.dateUtils.timeParsers;
-			for (i = 0, len = parsers.length; i < len; i++) {
+			for (i = 0, len = parsers.length; i &lt; len; i++) {
 				if ((match = dateStr.match(parsers[i].matcher))) {
 					timeParts = parsers[i].getParts(match);
 					break;
 				}
 			}
-			if (!dateParts && !timeParts) {
+			if (!dateParts &amp;&amp; !timeParts) {
 				return 0;
 			}
 			if (!dateParts) {
@@ -442,35 +532,35 @@
 	
 	var util = $.TableSorter.dateUtils = {
 		today: [now.getFullYear(), now.getMonth(), now.getDate()],
-		monthLookup: {'jan':1, 'feb':2, 'mar':3, 'apr':4, 'may':5, 'jun':6, 'jul':7, 'aug':8, 'sep':9, 'oct':10, 'nov':11, 'dec':12},
+		monthLookup: {&#x27;jan&#x27;:1, &#x27;feb&#x27;:2, &#x27;mar&#x27;:3, &#x27;apr&#x27;:4, &#x27;may&#x27;:5, &#x27;jun&#x27;:6, &#x27;jul&#x27;:7, &#x27;aug&#x27;:8, &#x27;sep&#x27;:9, &#x27;oct&#x27;:10, &#x27;nov&#x27;:11, &#x27;dec&#x27;:12},
 		regexes: {
-			YEAR: "[1-9]\\d{3}",
-			MONTH: "1[0-2]|0?[1-9]",
-			MONTHNAME: "jan|january|feb|february|mar|march|apr|april|may|jun|june|jul|july|aug|august|sep|september|oct|october|nov|november|dec|december",
-			DAY: "3[01]|[12]\\d|0?[1-9]",
-			DAY2: "3[01]|[12]\\d|0[1-9]",
-			TIMEZONE: "[+-][01]\\d\\:?[0-5]\\d",
-			H24: "[01]\\d|2[0-3]",
-			MIN: "[0-5]\\d",
-			SEC: "[0-5]\\d",
-			MS: "\\d{3,}",
-			H12: "0?[1-9]|1[012]",
-			AMPM: "am|pm"	
+			YEAR: &quot;[1-9]\\d{3}&quot;,
+			MONTH: &quot;1[0-2]|0?[1-9]&quot;,
+			MONTHNAME: &quot;jan|january|feb|february|mar|march|apr|april|may|jun|june|jul|july|aug|august|sep|september|oct|october|nov|november|dec|december&quot;,
+			DAY: &quot;3[01]|[12]\\d|0?[1-9]&quot;,
+			DAY2: &quot;3[01]|[12]\\d|0[1-9]&quot;,
+			TIMEZONE: &quot;[+-][01]\\d\\:?[0-5]\\d&quot;,
+			H24: &quot;[01]\\d|2[0-3]&quot;,
+			MIN: &quot;[0-5]\\d&quot;,
+			SEC: &quot;[0-5]\\d&quot;,
+			MS: &quot;\\d{3,}&quot;,
+			H12: &quot;0?[1-9]|1[012]&quot;,
+			AMPM: &quot;am|pm&quot;	
 		},
 		makePattern: function(code) {
 			code = code.replace(/_([A-Z][A-Z0-9]+)_/g, function($0, $1) {
 				return util.regexes[$1];
 			});
-			return new RegExp(code, 'i');
+			return new RegExp(code, &#x27;i&#x27;);
 		}
 	};
 	util.timeParsers = [
 		{
 			// 8:32pm
-			matcher: util.makePattern("(?:\\b|T| )(_H12_)(?:\\:(_MIN_)(?:\\:(_SEC_))?)? ?(_AMPM_)"),
+			matcher: util.makePattern(&quot;(?:\\b|T| )(_H12_)(?:\\:(_MIN_)(?:\\:(_SEC_))?)? ?(_AMPM_)&quot;),
 			getParts: function(match) {
 				var hour = parseInt(match[1], 10);
-				hour = match[2].toLowerCase() == 'am' ? (hour == 12 ? 0 : hour) : (hour == 12 ? 12 : hour + 12);
+				hour = match[2].toLowerCase() == &#x27;am&#x27; ? (hour == 12 ? 0 : hour) : (hour == 12 ? 12 : hour + 12);
 				var min = match[2] || 0;
 				var sec = match[3] || 0;
 				return [hour, min, sec, 0];
@@ -478,7 +568,7 @@
 		},
 		{
 			// 20:32:00
-			matcher: util.makePattern("(?:\\b|T| )(_H24_)\\:(_MIN_)(?:\\:(_SEC_)(?:\\.(_MS_))?)?"),
+			matcher: util.makePattern(&quot;(?:\\b|T| )(_H24_)\\:(_MIN_)(?:\\:(_SEC_)(?:\\.(_MS_))?)?&quot;),
 			getParts: function(match) {
 				var hour = match[1];
 				var min = match[2];
@@ -491,7 +581,7 @@
 	util.dateParsers = [
 		{
 			// 7/28/2013
-			matcher: util.makePattern("^(_MONTH_)( ?[\\/-] ?)(_DAY_)\\2(_YEAR_)"),
+			matcher: util.makePattern(&quot;^(_MONTH_)( ?[\\/-] ?)(_DAY_)\\2(_YEAR_)&quot;),
 			getParts: function(match) {
 				var m = match[1];
 				var d = match[3];
@@ -501,7 +591,7 @@
 		},
 		{
 			// 2013-07-28
-			matcher: util.makePattern("^(_YEAR_)-(_MONTH_)-(_DAY_)"),
+			matcher: util.makePattern(&quot;^(_YEAR_)-(_MONTH_)-(_DAY_)&quot;),
 			getParts: function(match) {
 				var Y = match[1];
 				var m = match[2];
@@ -511,7 +601,7 @@
 		},
 		{
 			// 28 Jul 2013
-			matcher: util.makePattern("^(_DAY_)([ -])(_MONTHNAME_).?\\2(_YEAR_)"),
+			matcher: util.makePattern(&quot;^(_DAY_)([ -])(_MONTHNAME_).?\\2(_YEAR_)&quot;),
 			getParts: function(match) {
 				var Y = match[4];
 				var m = util.monthLookup[match[3].toLowerCase().slice(0,3)];
@@ -521,7 +611,7 @@
 		},
 		{
 			// Jul 28, 2013
-			matcher: util.makePattern("^(_MONTHNAME_) (_DAY_),? (_YEAR_)"),
+			matcher: util.makePattern(&quot;^(_MONTHNAME_) (_DAY_),? (_YEAR_)&quot;),
 			getParts: function(match) {
 				var Y = match[3];
 				var m = util.monthLookup[match[1].toLowerCase().slice(0,3)];
@@ -539,7 +629,7 @@
 			return row.getAttribute(attrName);
 		},
 		cellAttr: function(i, row, cellSelector, attrName) {
-			if (typeof cellSelector == 'number') {
+			if (typeof cellSelector == &#x27;number&#x27;) {
 				return row.children[cellSelector-1].getAttribute(attrName);
 			}
 			return $(row).find(cellSelector).attr(attrName);
@@ -550,10 +640,10 @@
 		columns: function(i, row, idxList, glue) {
 			idxList = idxList.split(/\s*,\s*/);
 			var text = [];
-			for (var j = 0, len = idxList.length; j < len; j++) {
+			for (var j = 0, len = idxList.length; j &lt; len; j++) {
 				text.push(getText(row.children[idxList[j]-1]));
 			}
-			return text.join(glue || ' ');
+			return text.join(glue || &#x27; &#x27;);
 		},
 		selector: function(i, row, selector) {
 			return $(row).find(selector).text();
@@ -571,10 +661,10 @@
 			return cellValue === search;
 		},
 		contains: function(i, cellValue, search) {
-			return cellValue.toLowerCase().indexOf(search.toLowerCase()) > -1;
+			return cellValue.toLowerCase().indexOf(search.toLowerCase()) &gt; -1;
 		},
 		containsCaseSensitive: function(i, cellValue, search) {
-			return cellValue.indexOf(search) > -1;
+			return cellValue.indexOf(search) &gt; -1;
 		},
 		matchAt: function(i, cellValue, search, atIndex) {
 			return cellValue.toLowerCase().indexOf(search.toLowerCase()) === atIndex;
@@ -592,16 +682,16 @@
 			return regExp.test(cellValue);
 		},
 		gt: function(i, cellValue, compareTo) {
-			return parseFloat(cellValue) > compareTo;
+			return parseFloat(cellValue) &gt; compareTo;
 		},
 		gte: function(i, cellValue, compareTo) {
-			return parseFloat(cellValue) >= compareTo;
+			return parseFloat(cellValue) &gt;= compareTo;
 		},
 		lt: function(i, cellValue, compareTo) {
-			return parseFloat(cellValue) < compareTo;			
+			return parseFloat(cellValue) &lt; compareTo;			
 		},
 		lte: function(i, cellValue, compareTo) {
-			return parseFloat(cellValue) <= compareTo;			
+			return parseFloat(cellValue) &lt;= compareTo;			
 		},
 		eq: function(i, cellValue, compareTo) {
 			return parseFloat(cellValue) === compareTo;			
@@ -610,30 +700,50 @@
 			return parseFloat(cellValue) != compareTo;			
 		},
 		isEmpty: function(i, cellValue) {
-			return cellValue === '';
+			return cellValue === &#x27;&#x27;;
 		},
 		isNotEmpty: function(i, cellValue) {
-			return cellValue !== '';
+			return cellValue !== &#x27;&#x27;;
 		}
 	};
 	
 	
 	$.fn.tablesorter = function(options) {  
-		var instance = this.data('TableSorterInstance');
+		var instance = this.data(&#x27;TableSorterInstance&#x27;);
 		// handle where first arg is method TableSorter and additional args should be passed to that method
-		if (typeof options == 'string' && instance instanceof $.TableSorter && typeof this.data('TableSorterInstance')[options] == 'function') {
+		if (typeof options == &#x27;string&#x27; &amp;&amp; instance instanceof $.TableSorter &amp;&amp; typeof this.data(&#x27;TableSorterInstance&#x27;)[options] == &#x27;function&#x27;) {
 			var args = Array.prototype.slice.call(arguments, 1);
-			return this.data('TableSorterInstance')[options].apply(this.data('TableSorterInstance'), args);
+			return this.data(&#x27;TableSorterInstance&#x27;)[options].apply(this.data(&#x27;TableSorterInstance&#x27;), args);
 		}
-		if (this.data('TableSorterInstance')) {
+		if (this.data(&#x27;TableSorterInstance&#x27;)) {
 			return this;
 		}
 		// otherwise create new $.TableSorter instance but return the jQuery instance
 		return this.each(function() {     
 			var $elem = $(this);
 			var instance = new $.TableSorter($elem, options);
-			$elem.data('TableSorterInstance', instance);
+			$elem.data(&#x27;TableSorterInstance&#x27;, instance);
 		});
 	};
 	
 }));  
+
+    </pre>
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>

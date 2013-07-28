@@ -1,0 +1,460 @@
+{
+    "project": {
+        "name": "jQuery-TableSorter",
+        "description": "High performance table sort and filter",
+        "version": "0.1.0-pre",
+        "url": "https://github.com/kensnyder/jQuery-TableSorter"
+    },
+    "files": {
+        "src/TableSorter.js": {
+            "name": "src/TableSorter.js",
+            "modules": {
+                "jQuery": 1
+            },
+            "classes": {
+                "TableSorter": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        }
+    },
+    "modules": {
+        "jQuery": {
+            "name": "jQuery",
+            "submodules": {},
+            "classes": {
+                "TableSorter": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "src/TableSorter.js",
+            "line": 52
+        }
+    },
+    "classes": {
+        "TableSorter": {
+            "name": "TableSorter",
+            "shortname": "TableSorter",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "jQuery",
+            "namespace": "",
+            "file": "src/TableSorter.js",
+            "line": 52,
+            "is_constructor": 1,
+            "example": [
+                "\n\n\t// Instantiate the OOP way\n\tvar instance = new $.TableSorter('selector', options)\n\t\t\n\t// Instantiate the jQuery way\n\t$('selector').tablesorter(options);\n\t// call methods on the instance\n\t$('selector').tablesorter('method', arg1, arg2);\n\t// initialize and get back instance\n\tvar instance = $('selector').tablesorter('getInstance');"
+            ],
+            "params": [
+                {
+                    "name": "$element",
+                    "description": "The selector, jQuery object, or Element to make sortable (may be a table or any other element)",
+                    "type": "String|jQuery|HTMLElement"
+                },
+                {
+                    "name": "options",
+                    "description": "See {{#crossLink \"TableSorter/options:property\"}}options property{{/crossLink}} for full documentation",
+                    "type": "Object",
+                    "optional": true,
+                    "optdefault": "TableSorter.defaultOptions"
+                }
+            ]
+        }
+    },
+    "classitems": [
+        {
+            "file": "src/TableSorter.js",
+            "line": 25,
+            "description": "Default options. Change these to globally change the default options\nSee {{#crossLink \"TableSorter/constructor:method\"}}constructor{{/crossLink}} for documentation on each option",
+            "itemtype": "property",
+            "name": "defaultOptions",
+            "type": "Object",
+            "static": 1,
+            "class": "TableSorter",
+            "module": "jQuery"
+        },
+        {
+            "file": "src/TableSorter.js",
+            "line": 38,
+            "description": "The current options. Starts with value given in constructor",
+            "itemtype": "property",
+            "name": "options",
+            "type": "Object",
+            "example": [
+                "\n\t\n\t\n\t"
+            ],
+            "class": "TableSorter",
+            "module": "jQuery",
+            "subprops": [
+                {
+                    "name": "onInitialize",
+                    "description": "Add a {{#crossLink \"TableSorter/Initialize:event\"}}Initialize event{{/crossLink}}",
+                    "type": "Function",
+                    "optional": true
+                }
+            ]
+        },
+        {
+            "file": "src/TableSorter.js",
+            "line": 48,
+            "itemtype": "property",
+            "name": "",
+            "type": "",
+            "class": "TableSorter",
+            "module": "jQuery"
+        },
+        {
+            "file": "src/TableSorter.js",
+            "line": 79,
+            "description": "Fired after initialization",
+            "itemtype": "event",
+            "name": "Initialize",
+            "params": [
+                {
+                    "name": "UNKNOWN",
+                    "description": ""
+                }
+            ],
+            "ifprevented": "The",
+            "example": [
+                "\n\t\t\t \n\t\n"
+            ],
+            "class": "TableSorter",
+            "module": "jQuery"
+        },
+        {
+            "file": "src/TableSorter.js",
+            "line": 90,
+            "description": "Get this instance. Useful for jQuery-style usage:  var instance = $('input').tablesorter(options).tablesorter('getInstance')",
+            "itemtype": "method",
+            "name": "getInstance",
+            "return": {
+                "description": "",
+                "type": "TableSorter"
+            },
+            "class": "TableSorter",
+            "module": "jQuery"
+        },
+        {
+            "file": "src/TableSorter.js",
+            "line": 98,
+            "description": "Gather table elements, zebra stripe, and clear value cache. Performed on initialization and on re-indexing",
+            "itemtype": "method",
+            "name": "_index",
+            "access": "private",
+            "tagname": "",
+            "class": "TableSorter",
+            "module": "jQuery"
+        },
+        {
+            "file": "src/TableSorter.js",
+            "line": 110,
+            "description": "Trigger indexing after something in the table changes",
+            "itemtype": "method",
+            "name": "reindex",
+            "return": {
+                "description": "",
+                "type": "TableSorter"
+            },
+            "chainable": 1,
+            "class": "TableSorter",
+            "module": "jQuery"
+        },
+        {
+            "file": "src/TableSorter.js",
+            "line": 120,
+            "description": "Find all the headings matching the given selector",
+            "itemtype": "method",
+            "name": "_getHeadings",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "selector",
+                    "description": "CSS selector to find the rows OR a Collection of HTMLTableRowElement objects",
+                    "type": "String|HTMLElement[]"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "HTMLElement[]"
+            },
+            "class": "TableSorter",
+            "module": "jQuery"
+        },
+        {
+            "file": "src/TableSorter.js",
+            "line": 130,
+            "description": "Find all the rows matching the given selector",
+            "itemtype": "method",
+            "name": "_getRows",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "selector",
+                    "description": "CSS selector to find the rows OR a Collection of HTMLTableRowElement objects",
+                    "type": "String|HTMLElement[]"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "HTMLElement[]"
+            },
+            "class": "TableSorter",
+            "module": "jQuery"
+        },
+        {
+            "file": "src/TableSorter.js",
+            "line": 140,
+            "description": "Set the collected values for the given column",
+            "itemtype": "method",
+            "name": "setValues",
+            "params": [
+                {
+                    "name": "colNum",
+                    "description": "The index of the column starting with 1",
+                    "type": "Number"
+                },
+                {
+                    "name": "th",
+                    "description": "The table heading element",
+                    "type": "HTMLElement"
+                },
+                {
+                    "name": "values",
+                    "description": "The array of values that was collected",
+                    "type": "Array"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "TableSorter"
+            },
+            "chainable": 1,
+            "class": "TableSorter",
+            "module": "jQuery"
+        },
+        {
+            "file": "src/TableSorter.js",
+            "line": 153,
+            "description": "Get the values associated with the given column",
+            "itemtype": "method",
+            "name": "getValues",
+            "params": [
+                {
+                    "name": "th",
+                    "description": "The header element for which to get the values",
+                    "type": "HtmlElement"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Array"
+            },
+            "class": "TableSorter",
+            "module": "jQuery"
+        },
+        {
+            "file": "src/TableSorter.js",
+            "line": 178,
+            "description": "Get the datatype of the given column",
+            "itemtype": "method",
+            "name": "getDatatype",
+            "params": [
+                {
+                    "name": "th",
+                    "description": "The table heading element (a member of this.headings)",
+                    "type": "HTMLElement"
+                }
+            ],
+            "return": {
+                "description": "The datatype specified in the th attribute data-datatype (string|number)",
+                "type": "String"
+            },
+            "class": "TableSorter",
+            "module": "jQuery"
+        },
+        {
+            "file": "src/TableSorter.js",
+            "line": 187,
+            "description": "Get the function needed to process values in the given column (strings or numbers)",
+            "itemtype": "method",
+            "name": "getDatatypeProcessor",
+            "params": [
+                {
+                    "name": "th",
+                    "description": "The table heading element (a member of this.headings)",
+                    "type": "HTMLElement"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Function"
+            },
+            "class": "TableSorter",
+            "module": "jQuery"
+        },
+        {
+            "file": "src/TableSorter.js",
+            "line": 200,
+            "description": "Get the function needed to colect values for each row in the given column (e.g. cell text or attribute on row)",
+            "itemtype": "method",
+            "name": "getDatatypeProcessor",
+            "params": [
+                {
+                    "name": "th",
+                    "description": "The table heading element (a member of this.headings)",
+                    "type": "HTMLElement"
+                },
+                {
+                    "name": "idx",
+                    "description": "The index of the heading in the DOM",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "A function that takes argument tr (HTMLElement) and returning the value for that row and column",
+                "type": "Function"
+            },
+            "class": "TableSorter",
+            "module": "jQuery"
+        },
+        {
+            "file": "src/TableSorter.js",
+            "line": 223,
+            "description": "Collect and store the values associated with each column",
+            "itemtype": "method",
+            "name": "getValues",
+            "return": {
+                "description": "",
+                "type": "Undefined"
+            },
+            "class": "TableSorter",
+            "module": "jQuery"
+        },
+        {
+            "file": "src/TableSorter.js",
+            "line": 251,
+            "description": "Sort on the given column",
+            "itemtype": "method",
+            "name": "sort",
+            "params": [
+                {
+                    "name": "th",
+                    "description": "The header element to sort on",
+                    "type": "HTMLElement"
+                },
+                {
+                    "name": "direction",
+                    "description": "Sort ascending or descending (-1/DESC/desc or 1/ASC/asc)",
+                    "type": "String|Number",
+                    "optional": true,
+                    "optdefault": "ASC"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "TableSorter"
+            },
+            "class": "TableSorter",
+            "module": "jQuery"
+        },
+        {
+            "file": "src/TableSorter.js",
+            "line": 278,
+            "description": "Filter out and hide rows with a callback (signature 1)",
+            "itemtype": "method",
+            "name": "filter",
+            "params": [
+                {
+                    "name": "callack",
+                    "description": "A callback to apply to each row; if it returns truthy, the row will be displayed otherwise it will be hidden",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "TableSorter"
+            },
+            "class": "TableSorter",
+            "module": "jQuery"
+        },
+        {
+            "file": "src/TableSorter.js",
+            "line": 284,
+            "description": "Filter out and hide rows with a pre-defined filter (signature 2)",
+            "itemtype": "method",
+            "name": "filter",
+            "params": [
+                {
+                    "name": "name",
+                    "description": "The name of the filter defined with defineFilter()",
+                    "type": "String"
+                },
+                {
+                    "name": "args",
+                    "description": "One or more arguments to pass to the filter's rule callback",
+                    "type": "Any",
+                    "optional": true,
+                    "multiple": true
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "TableSorter"
+            },
+            "class": "TableSorter",
+            "module": "jQuery"
+        },
+        {
+            "file": "src/TableSorter.js",
+            "line": 363,
+            "description": "Paint the rows with zebra classes",
+            "itemtype": "method",
+            "name": "zebra",
+            "params": [
+                {
+                    "name": "cssClasses",
+                    "description": "A list of classes to repeat such as ['odd','even']",
+                    "type": "Array"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "TableSorter"
+            },
+            "chainable": 1,
+            "class": "TableSorter",
+            "module": "jQuery"
+        },
+        {
+            "file": "src/TableSorter.js",
+            "line": 534,
+            "class": "TableSorter",
+            "module": "jQuery"
+        }
+    ],
+    "warnings": [
+        {
+            "message": "param name/type/descript missing",
+            "line": " src/TableSorter.js:38"
+        },
+        {
+            "message": "param name missing: {}",
+            "line": " src/TableSorter.js:79"
+        },
+        {
+            "message": "unknown tag: ifprevented",
+            "line": " src/TableSorter.js:79"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/TableSorter.js:534"
+        }
+    ]
+}

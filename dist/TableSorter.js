@@ -1,3 +1,6 @@
+/*! jQuery Table Sorter - v0.1.0-pre - Jul 2013
+* https://github.com/kensnyder/jQuery-TableSorter
+* Copyright (c) 2013 Ken Snyder; Licensed MIT */
 (function (factory) {
 	// AMD compatibility
 	// https://github.com/umdjs/umd/blob/6c10fc0af1e1692cf430c9eb7f530d6b5a5d758b/jqueryPlugin.js
@@ -387,7 +390,7 @@
 	//
 	// static properties and methods
 	//
-	$.TableSorter.version = '%VERSION%';
+	$.TableSorter.version = '0.1.0-pre';
 	
 	$.TableSorter.datatypes = {
 		string: Array.prototype.trim ? 

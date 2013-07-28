@@ -19,14 +19,6 @@ module.exports = function(grunt) {
 			compress: ['<%= pkg.constructor_name %>']
 		},
 		copy: {
-			css: {
-				files: [
-					{
-						src: ['./src/<%= pkg.constructor_name %>.css'], 
-						dest: './dist/<%= pkg.constructor_name %>.css'
-					}
-				]
-			},
 			compress: {
 				files: [
 					{
@@ -44,8 +36,8 @@ module.exports = function(grunt) {
 				stripBanners: true
 			},
 			dist: {
-				src: ['src/<%= pkg.name %>.js'],
-				dest: 'dist/<%= pkg.name %>.js'
+				src: ['src/<%= pkg.constructor_name %>.js'],
+				dest: 'dist/<%= pkg.constructor_name %>.js'
 			}
 		},
 		uglify: {
@@ -54,18 +46,7 @@ module.exports = function(grunt) {
 			},
 			dist: {
 				src: '<%= concat.dist.dest %>',
-				dest: './dist/<%= pkg.name %>.min.js'
-			}
-		},
-		cssmin: {
-			options: {
-				banner: '/* jQuery <%= pkg.constructor_name %> <%= pkg.version %> */',
-				report: 'gzip'
-			},
-			compress: {
-				files: {
-					'./dist/<%= pkg.constructor_name %>.min.css': ['src/<%= pkg.constructor_name %>.css']
-				}
+				dest: './dist/<%= pkg.constructor_name %>.min.js'
 			}
 		},
 		compress: {
@@ -118,7 +99,6 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-qunit');
-	grunt.loadNpmTasks('grunt-contrib-cssmin');
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.loadNpmTasks('grunt-contrib-yuidoc');
 	grunt.loadNpmTasks('grunt-contrib-compress');
@@ -212,6 +192,6 @@ module.exports = function(grunt) {
 	});
 	
 	// Default task.
-	grunt.registerTask('default', ['jshint', 'qunit', 'clean:init', 'copy:css', 'concat:dist', 'updateVersions', 'cssmin', 'uglify', 'copy:compress', 'compress', 'clean:compress', 'yuidoc', 'logo', 'readme']);
+	grunt.registerTask('default', ['jshint', 'qunit', 'clean:init', 'concat:dist', 'updateVersions', 'uglify', 'copy:compress', 'compress', 'clean:compress', 'yuidoc', 'logo', 'readme']);
 
 };
