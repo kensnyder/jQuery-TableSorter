@@ -72,11 +72,13 @@
 			if (this.$table.length === 0) {
 				return;
 			}
-			this.options = $.extend({}, $.TableSorter.defaultOptions, options || {});		
+			this.options = $.extend({}, $.TableSorter.defaultOptions, options || {});
+			this.filters = this.options.filters || {};
+			this.$placeholder = $('<div />');
 			this.$thead = this.$table.find(this.options.thead);
 			this.headings = this.getHeadings(this.options.headings);
 			this.rows = this.getRows(this.options.rows);
-			this.paintZebra(this.options.zebraClasses);	
+			this.zebra(this.options.zebraClasses);
 			/**
 			 * Fired after initialization
 			 * @event Initialize
@@ -118,9 +120,21 @@
 			}
 			return th.TableSorterValues;
 		},
+		/**
+		 * Get the datatype of the given column
+		 * @method getDatatype
+		 * @param {HTMLElement} th  The table heading element (a member of this.headings)
+		 * @return {String}  The datatype specified in the th attribute data-datatype (string|number)
+		 */
 		getDatatype: function(th) {
 			return th.getAttribute('data-datatype') || 'string';
 		},
+		/**
+		 * Get the function needed to process values in the given column (strings or numbers)
+		 * @method getDatatypeProcessor
+		 * @param {HTMLElement} th  The table heading element (a member of this.headings)
+		 * @return {Function}
+		 */
 		getDatatypeProcessor: function(th) {
 			var type = this.getDatatype(th);
 			if (!$.TableSorter.datatypes[type]) {
@@ -128,6 +142,13 @@
 			}
 			return $.TableSorter.datatypes[type];
 		},
+		/**
+		 * Get the function needed to colect values for each row in the given column (e.g. cell text or attribute on row)
+		 * @method getDatatypeProcessor
+		 * @param {HTMLElement} th  The table heading element (a member of this.headings)
+		 * @param {Number} idx  The index of the heading in the DOM
+		 * @return {Function}  A function that takes argument tr (HTMLElement) and returning the value for that row and column
+		 */
 		getCollector: function(th, idx) {
 			var type, arg;
 			for (type in $.TableSorter.collectors) {
@@ -140,8 +161,8 @@
 				arg = idx + 1;
 				type = 'column';
 			}
-			return function(th) {
-				return $.TableSorter.collectors[type](th, arg);
+			return function(i, tr) {
+				return $.TableSorter.collectors[type](i, tr, arg);
 			};
 		},
 		/**
@@ -156,16 +177,16 @@
 			for (c = 0, clen = children.length; c < clen; c++) {
 				th = children[c];
 				if (th === this.headings[thIdx]) {
-					thsByIdx[thIdx++] = {element:th, values:[]};
+					thsByIdx[thIdx++] = {element:th, values:[], idx:c};
 				}
 			}
 			for (c = 0; c < thIdx; c++) {
 				processor = this.getDatatypeProcessor(thsByIdx[c].element);
-				collector = this.getCollector(thsByIdx[c].element, c);
+				collector = this.getCollector(thsByIdx[c].element, thsByIdx[c].idx);
 				for (r = 0, rlen = this.rows.length; r < rlen; r++) {
 					thsByIdx[c].values.push({
 						tr: this.rows[r],
-						val: processor( collector(this.rows[r]) )
+						val: processor( collector(r, this.rows[r]) )
 					});					
 				}
 			}
@@ -177,13 +198,129 @@
 			}
 		},
 		/**
+		 * Sort on the given column
+		 * @method sort
+		 * @param {HTMLElement} th  The header element to sort on
+		 * @param {String|Number} [direction=ASC]  Sort ascending or descending (-1/DESC/desc or 1/ASC/asc)
+		 * @return {TableSorter}
+		 */
+		sort: function(th, direction) {
+			var table, i, len;
+			if (!th.TableSorterValues) {
+				this._collectValues();
+			}
+			direction = direction && (/desc|-1/i).test(direction) ? -1 : 1;			
+			// detach table element from DOM while sorting because it is faster: http://jsperf.com/to-detach-or-not-to-detach
+			this.$table.replaceWith(this.$placeholder);
+			table = this.$table.get(0);
+			// TODO: handle one or more tbodies and thead if needed?
+			if (direction == 1) {
+				for (i = 0, len = th.TableSorterValues.length; i < len; i++) {
+					table.appendChild(th.TableSorterValues[i].tr);
+				}
+			}
+			else {
+				for (i = th.TableSorterValues.length - 1; i >= 0; i--) {
+					table.appendChild(th.TableSorterValues[i].tr);
+				}				
+			}
+			// re-attache table element into the DOM
+			this.$placeholder.replaceWith(this.$table);
+			return this;
+		},
+		/**
+		 * Filter out and hide rows with a callback (signature 1)
+		 * @method filter
+		 * @param {Function} callack  A callback to apply to each row; if it returns truthy, the row will be displayed otherwise it will be hidden
+		 * @return {TableSorter}
+		 */
+		/**
+		 * Filter out and hide rows with a pre-defined filter (signature 2)
+		 * @method filter
+		 * @param {String} name  The name of the filter defined with defineFilter()
+		 * @param {Any} arg..  One or more arguments to pass to the filter's rule callback
+		 * @return {TableSorter}
+		 */
+		filter: function(callback) {
+			var i, len, args, spec, applyWith;
+			if (typeof callback == 'string') {
+				// signature 2: named filter
+				spec = this.filters[callback];
+				if (!spec) {
+					throw new TypeError('Unknown filter `' + callback + '`. Filters must be pre-defined with defineFilter(name,spec).');
+				}
+				args = [].slice.call(arguments, 1);
+				if (spec.dynamicRule) {
+					if (spec.setup) {
+						args = spec.setup(args);
+					}
+					applyWith = [undefined,undefined].concat(args);
+					for (i = 0, len = this.rows.length; i < len; i++) {
+						applyWith[0] = i;
+						applyWith[1] = this.rows[i];
+						this.rows[i].style.display = spec.dynamicRule.apply(null, applyWith) ? '' : 'none';
+					}
+				}
+				else {
+					// apply is faster than call
+					// create an applyWith array so we can avoid the slowdown of concat in each loop
+					applyWith = [undefined,undefined].concat(args);
+					for (i = 0, len = spec.values.length; i < len; i++) {
+						applyWith[0] = i;
+						applyWith[1] = spec.values[i];
+						this.rows[i].style.display = (spec.rule.apply(null, applyWith) ? '' : 'none');
+					}
+				}
+			}
+			else {
+				// signature 1: callback
+				for (i = 0, len = this.rows.length; i < len; i++) {
+					this.rows[i].style.display = (callback(i, this.rows[i]) ? '' : 'none');
+				}
+			}
+			return this;
+		},
+		defineFilter: function(name, spec) {
+			var i, len, withArgs, fn;
+			if (spec.column) {
+				spec.collector = ['column', spec.column];
+			}
+			if ($.isArray(spec.collector)) {
+				fn = $.TableSorter.collectors[ spec.collector[0] ];
+				// run concat outside loop
+				// see http://jsperf.com/concat-inside-loop-vs-outside-loop
+				withArgs = [undefined,undefined].concat(spec.collector.slice(1));
+				spec.collector = function(i, row) {
+					withArgs[0] = i;
+					withArgs[1] = row;
+					return fn.apply(null, withArgs);
+				};
+			}
+			if (!spec.dynamicRule) {
+				spec.values = [];
+				for (i = 0, len = this.rows.length; i < len; i++) {
+					spec.values.push(spec.collector(i, this.rows[i]));
+				}
+				if (!spec.rule) {
+					spec.rule = $.TableSorter.rules.matchAnywhere;
+				}				
+				if (typeof spec.rule == 'string' && !!$.TableSorter.rules[spec.rule]) {
+					spec.rule = $.TableSorter.rules[spec.rule];
+				}
+				if (typeof spec.rule != 'function') {
+					throw new TypeError('defineFilter(name, spec) - spec.rule `'+spec.rule+'` must be a function or a key in $.TableSorter.rules');
+				}
+			}
+			this.filters[name] = spec;
+		},
+		/**
 		 * Paint the rows with zebra classes
-		 * @method paintZebra
+		 * @method zebra
 		 * @param {Array} cssClasses  A list of classes to repeat such as ['odd','even']
 		 * @return {TableSorter}
 		 * @chainable
 		 */
-		paintZebra: function(cssClasses) {
+		zebra: function(cssClasses) {
 			if (!cssClasses || cssClasses.length === 0) {
 				return this;
 			}
@@ -206,9 +343,13 @@
 	$.TableSorter.version = '%VERSION%';
 	
 	$.TableSorter.datatypes = {
-		string: function(s) {
-			return $.trim(s);
-		},
+		string: Array.prototype.trim ? 
+			function(s) {
+				return s.trim();
+			} :
+			function(s) {
+				return $.trim(s);
+			},
 		number: function(number) {
 			// parse float after removing leading characters besides digits, decimal points, and signs
 			return parseFloat(number.replace(/^[^\d\.+\-]+/, ''));
@@ -216,21 +357,61 @@
 	};	
 	
 	$.TableSorter.collectors = {
-		attr: function(row, value) {
-			return row.getAttribute(value);
+		attr: function(i, row, attrName) {
+			return row.getAttribute(attrName);
 		},
-		column: function(row, idx) {
+		cellAttr: function(i, row, cellSelector, attrName) {
+			if (typeof cellSelector == 'number') {
+				return row.children[cellSelector-1].getAttribute(attrName);
+			}
+			return $(row).find(cellSelector).attr(attrName);
+		},
+		column: function(i, row, idx) {
 			return getText(row.children[idx-1]);
 		},
-		selector: document.querySelector ? 
-			function(row, selector) {			
-				return selector.match(/(\:|\()/) ? $(row).find(selector).text() : getText(row.querySelector(selector));
-			} :
-			function (row, selector) {
-				return $(row).find(selector).text();
-			},
-		callback: function(row, name) {
+		columns: function(i, row, idxList, glue) {
+			idxList = idxList.split(/\s*,\s*/);
+			var text = [];
+			for (var j = 0, len = idxList.length; j < len; j++) {
+				text.push(getText(row.children[idxList[j]-1]));
+			}
+			return text.join(glue || ' ');
+		},
+		selector: function(i, row, selector) {
+			return $(row).find(selector).text();
+		},
+		callback: function(i, row, name) {
 			return window[name](row);
+		}
+	};
+	
+	$.TableSorter.rules = {
+		matchAnywhere: function(i, cellValue, search) {
+			return cellValue.toLowerCase().indexOf(search.toLowerCase()) > -1;
+		},
+		matchAnywhereCaseSensitive: function(i, cellValue, search) {
+			return cellValue.indexOf(search) > -1;
+		},
+		matchAt: function(i, cellValue, search, at) {
+			return cellValue.toLowerCase().indexOf(search.toLowerCase()) === at;
+		},
+		matchAtCaseSensitive: function(i, cellValue, search, at) {
+			return cellValue.indexOf(search) === at;
+		},
+		startsWith: function(i, cellValue, search) {
+			return cellValue.toLowerCase().indexOf(search.toLowerCase()) === 0;
+		},
+		startsWithCaseSensitive: function(i, cellValue, search) {
+			return cellValue.indexOf(search) === 0;
+		},
+		regExp: function(i, cellValue, regExp) {
+			return regExp.test(cellValue);
+		},
+		greaterThan: function(i, cellValue, compareTo) {
+			return parseFloat(cellValue) > compareTo;
+		},
+		lessThan: function(i, cellValue, compareTo) {
+			return parseFloat(cellValue) < compareTo;			
 		}
 	};
 	

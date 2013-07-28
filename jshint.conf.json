@@ -8,6 +8,7 @@
   "browser": true,
   "jquery": true,
   "globals": {
-    "define": true
+    "define": true,
+	"console": true
   }
 }
