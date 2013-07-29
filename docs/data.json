@@ -248,13 +248,13 @@
             "params": [
                 {
                     "name": "th",
-                    "description": "The header element for which to get the values",
-                    "type": "HtmlElement"
+                    "description": "The header element for which to get the values or the 1-based index of the column in the DOM",
+                    "type": "HtmlElement|Number"
                 }
             ],
             "return": {
-                "description": "",
-                "type": "Array"
+                "description": "Array of values or null if th is not recognized",
+                "type": "Array|null"
             },
             "class": "TableSorter",
             "module": "jQuery"
@@ -413,7 +413,42 @@
         },
         {
             "file": "src/TableSorter.js",
-            "line": 363,
+            "line": 330,
+            "description": "Define a filter than can be given parameters later",
+            "itemtype": "method",
+            "name": "defineFilter",
+            "params": [
+                {
+                    "name": "name",
+                    "description": "The name of the filter to be called later by this.filter(name)",
+                    "type": "String"
+                },
+                {
+                    "name": "spec",
+                    "description": "A definition of the filter",
+                    "type": "Object",
+                    "props": [
+                        {
+                            "name": "column",
+                            "description": "The 1-based index of the column to use",
+                            "type": "Number",
+                            "optional": true
+                        },
+                        {
+                            "name": "collector",
+                            "description": "A function to use to collect values OR an Array with a name of a property in $.TableSorter.collectors and params to pass to that function",
+                            "type": "Function|Array",
+                            "optional": true
+                        }
+                    ]
+                }
+            ],
+            "class": "TableSorter",
+            "module": "jQuery"
+        },
+        {
+            "file": "src/TableSorter.js",
+            "line": 396,
             "description": "Paint the rows with zebra classes",
             "itemtype": "method",
             "name": "zebra",
@@ -434,7 +469,7 @@
         },
         {
             "file": "src/TableSorter.js",
-            "line": 534,
+            "line": 567,
             "class": "TableSorter",
             "module": "jQuery"
         }
@@ -454,7 +489,7 @@
         },
         {
             "message": "Missing item type",
-            "line": " src/TableSorter.js:534"
+            "line": " src/TableSorter.js:567"
         }
     ]
 }

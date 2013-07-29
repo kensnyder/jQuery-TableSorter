@@ -290,6 +290,15 @@ instance.methodName(arg1, arg2, argN);
 
 <tr>
 	<td>
+		<strong>defineFilter</strong>(name, spec)<br />
+		Define a filter than can be given parameters later<br />
+		<strong>@param</strong> {String} name The name of the filter to be called later by this.filter(name)<strong>@param</strong> {Object} spec A definition of the filter<br />
+		<strong>@return</strong> {undefined}
+	</td>
+</tr>
+
+<tr>
+	<td>
 		<strong>zebra</strong>(cssClasses)<br />
 		Paint the rows with zebra classes<br />
 		<strong>@param</strong> {Array} cssClasses A list of classes to repeat such as [&#x27;odd&#x27;,&#x27;even&#x27;]<br />
@@ -301,8 +310,8 @@ instance.methodName(arg1, arg2, argN);
 	<td>
 		<strong>getValues</strong>(th)<br />
 		Get the values associated with the given column<br />
-		<strong>@param</strong> {HtmlElement} th The header element for which to get the values<br />
-		<strong>@return</strong> {Array} 
+		<strong>@param</strong> {HtmlElement|Number} th The header element for which to get the values or the 1-based index of the column in the DOM<br />
+		<strong>@return</strong> {Array|null} Array of values or null if th is not recognized
 	</td>
 </tr>
 

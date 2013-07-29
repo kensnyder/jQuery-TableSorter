@@ -563,11 +563,11 @@ test("Definition", function() {
 	// filter on fruit column
 	sorter.defineFilter('fruit', {
 		collector: function(i, row) {
-			return $(row.children[0]).text();
+			return (i+1) + '. ' + $(row.children[0]).text();
 		}
 	});
 	strictEqual(typeof sorter.filters.fruit, 'object', 'Filter created ok.');
-	deepEqual(sorter.filters.fruit.values, ['Banana','Apple'], 'Collecting string values');
+	deepEqual(sorter.filters.fruit.values, ['1. Banana','2. Apple'], 'Collecting string values');
 	// filter on Count
 	sorter.defineFilter('count', {
 		collector: function(i, row) {
@@ -880,6 +880,42 @@ test("ne", function() {
 	strictEqual($table.find('tr').get(2).style.display, 'none', 'filtered row should be hidden');
 	strictEqual($table.find('tr').get(3).style.display, '', 'unfiltered row should be displayed');
 });
+test("between", function() {
+	var $table = makeTable([
+		'Name | Calories',
+		'Jane | 800',
+		'John | 2200',
+		'Jim | 3500'
+	]);
+	var sorter = new $.TableSorter($table);
+	// filter on fruit column
+	sorter.defineFilter('healthy', {
+		column: 2,
+		rule: 'between'
+	});
+	sorter.filter('healthy', 1800, 2400);
+	strictEqual($table.find('tr').get(1).style.display, 'none', 'filtered row should be hidden');
+	strictEqual($table.find('tr').get(2).style.display, '', 'unfiltered row should be displayed');
+	strictEqual($table.find('tr').get(3).style.display, 'none', 'filtered row should be hidden');
+});
+test("outside", function() {
+	var $table = makeTable([
+		'Name | Calories',
+		'Jane | 800',
+		'John | 2200',
+		'Jim | 3500'
+	]);
+	var sorter = new $.TableSorter($table);
+	// filter on fruit column
+	sorter.defineFilter('unhealthy', {
+		column: 2,
+		rule: 'outside'
+	});
+	sorter.filter('unhealthy', 1800, 2400);
+	strictEqual($table.find('tr').get(1).style.display, '', 'unfiltered row should be displayed');
+	strictEqual($table.find('tr').get(2).style.display, 'none', 'filtered row should be hidden');
+	strictEqual($table.find('tr').get(3).style.display, '', 'unfiltered row should be displayed');
+});
 test("isEmpty", function() {
 	var $table = makeTable([
 		'Fruit | Count',
@@ -1025,6 +1061,53 @@ test("Reindex then sort", function() {
 		'Strawberry | 10'
 	]);	
 	deepEqual(getContents($table), getContents($sorted3), 'Cell changes found after reindexing');	
+});
+module('Filter datatypes', config);
+test("string", function() {
+	var $table = makeTable([
+		'Fruit | Count',
+		' | 1',
+		' | 2'
+	]);
+	var sorter = new $.TableSorter($table);
+	$table.find('tr').eq(1).find('td').eq(0).text('\tBanana ');
+	$table.find('tr').eq(2).find('td').eq(0).text('\r\nApple ');
+	// filter on fruit column
+	sorter.defineFilter('fruit', {
+		column: 1,
+		datatype: 'string'
+	});
+	deepEqual(sorter.filters.fruit.values, ['Banana','Apple'], 'Collecting values with datatype string');
+});
+test("number", function() {
+	var $table = makeTable([
+		'Fruit | Price',
+		'Banana | $1.00',
+		'Apple | $2.00'
+	]);
+	var sorter = new $.TableSorter($table);
+	// filter on fruit column
+	sorter.defineFilter('fruit', {
+		column: 2,
+		datatype: 'number'
+	});
+	strictEqual(sorter.filters.fruit.values[0], 1, 'Dollars 1');
+	strictEqual(sorter.filters.fruit.values[1], 2, 'Dollars 2');
+});
+test("date", function() {
+	var $table = makeTable([
+		'Fruit | Next Delivery',
+		'Banana | 7/28/2013 5:10pm',
+		'Apple | 28 Jul 2013 at 5:10pm'
+	]);
+	var sorter = new $.TableSorter($table);
+	// filter on fruit column
+	sorter.defineFilter('fruit', {
+		column: 2,
+		datatype: 'date'
+	});
+	strictEqual(sorter.filters.fruit.values[0], 1375053360000 + utcOffsetMs, '7/28/2013 5:10pm');
+	strictEqual(sorter.filters.fruit.values[1], 1375053360000 + utcOffsetMs, '28 Jul 2013 at 5:10pm');
 });
 
 }(jQuery));

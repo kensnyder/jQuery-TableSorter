@@ -156,8 +156,8 @@
 		/**
 		 * Get the values associated with the given column
 		 * @method getValues
-		 * @param {HtmlElement} th  The header element for which to get the values
-		 * @return {Array}
+		 * @param {HtmlElement|Number} th  The header element for which to get the values or the 1-based index of the column in the DOM
+		 * @return {Array|null}  Array of values or null if th is not recognized
 		 */
 		getValues: function(th) {
 			var key;
@@ -330,21 +330,54 @@
 			this.zebra(this.options.zebra);
 			return this;
 		},
+		/**
+		 * Define a filter than can be given parameters later
+		 * @method defineFilter
+		 * @param {String} name  The name of the filter to be called later by this.filter(name)
+		 * @param {Object} spec  A definition of the filter
+		 * @param {Number} [spec.column]  The 1-based index of the column to use
+		 * @param {Function|Array} [spec.collector]  A function to use to collect values OR an Array with a name of a property in $.TableSorter.collectors and params to pass to that function
+		 */
 		defineFilter: function(name, spec) {
-			var i, len, applyWith, fn;
+			var i, len, applyWith, collector, processor;
 			if (spec.column) {
 				spec.collector = ['column', spec.column];
 			}
+			if (typeof spec.datatype == 'string') {
+				processor = $.TableSorter.datatypes[ spec.datatype ];
+				if (!processor) {
+					throw new TypeError('Unknown datatype `' + spec.datatype + '`. A filter datatype must be a function or property of $.TableSorter.datatypes.');
+				}
+			}
+			if (typeof spec.datatype == 'function') {
+				processor = spec.datatype;
+			}
+			if (typeof spec.collector == 'function' && processor) {
+				spec.collector = (function(collector) {
+					return function(i, row) {
+						return processor( collector(i, row) );
+					};
+				})(spec.collector);
+			}			
 			if ($.isArray(spec.collector)) {
-				fn = $.TableSorter.collectors[ spec.collector[0] ];
+				collector = $.TableSorter.collectors[ spec.collector[0] ];
 				// run concat outside loop
 				// see http://jsperf.com/concat-inside-loop-vs-outside-loop
 				applyWith = [undefined,undefined].concat(spec.collector.slice(1));
-				spec.collector = function(i, row) {
-					applyWith[0] = i;
-					applyWith[1] = row;
-					return fn.apply(null, applyWith);
-				};
+				if (processor) {
+					spec.collector = function(i, row) {
+						applyWith[0] = i;
+						applyWith[1] = row;
+						return processor( collector.apply(null, applyWith) );
+					};
+				}
+				else {
+					spec.collector = function(i, row) {
+						applyWith[0] = i;
+						applyWith[1] = row;
+						return collector.apply(null, applyWith);
+					};
+				}
 			}
 			if (!spec.dynamicRule) {
 				spec.values = [];
@@ -358,7 +391,7 @@
 					spec.rule = $.TableSorter.rules[spec.rule];
 				}
 				if (typeof spec.rule != 'function') {
-					throw new TypeError('defineFilter(name, spec) - spec.rule `'+spec.rule+'` must be a function or a key in $.TableSorter.rules');
+					throw new TypeError('defineFilter(name, spec) - spec.rule `'+spec.rule+'` must be a function or a property of $.TableSorter.rules');
 				}
 			}
 			this.filters[name] = spec;
@@ -401,7 +434,7 @@
 				return $.trim(s);
 			},
 		number: function(number) {
-			// parse float after removing leading characters besides digits, decimal points, and signs
+			// parse float after removing leading characters besides digits, decimal points, and signs (e.g. currency symbols)
 			return parseFloat(number.replace(/^[^\d\.+\-]+/, ''));
 		},
 		date: function(dateStr) {
@@ -611,6 +644,14 @@
 		},
 		ne: function(i, cellValue, compareTo) {
 			return parseFloat(cellValue) != compareTo;			
+		},
+		between: function(i, cellValue, min, max) {
+			var val = parseFloat(cellValue);
+			return val >= min && val <= max;			
+		},
+		outside: function(i, cellValue, upTo, orAbove) {
+			var val = parseFloat(cellValue);
+			return val < upTo || val > orAbove;			
 		},
 		isEmpty: function(i, cellValue) {
 			return cellValue === '';

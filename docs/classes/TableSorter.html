@@ -292,6 +292,13 @@ var instance = $(&#39;selector&#39;).tablesorter(&#39;getInstance&#39;);</code><
                             </li>
                         
                             <li class="index-item method">
+                                <a href="#method_defineFilter">defineFilter</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
                                 <a href="#method_filter">filter</a>
 
                                 
@@ -708,6 +715,151 @@ var instance = $(&#39;selector&#39;).tablesorter(&#39;getInstance&#39;);</code><
 </div>
 
                 
+                    <div id="method_defineFilter" class="method item">
+    <h3 class="name"><code>defineFilter</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>name</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>spec</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_TableSorter.js.html#l330"><code>src&#x2F;TableSorter.js:330</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Define a filter than can be given parameters later</p>
+
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">name</code>
+                        <span class="type">String</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>The name of the filter to be called later by this.filter(name)</p>
+
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">spec</code>
+                        <span class="type">Object</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>A definition of the filter</p>
+
+                    </div>
+
+                    
+                        <ul class="params-list">
+                            
+                            <li class="param">
+                                
+                                    <code class="param-name optional">[column]</code>
+                                    <span class="type">Number</span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+                                
+
+                                <div class="param-description">
+                                    <p>The 1-based index of the column to use</p>
+
+                                </div>
+
+                                
+                            </li>
+                            
+                            <li class="param">
+                                
+                                    <code class="param-name optional">[collector]</code>
+                                    <span class="type">Function | Array</span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+                                
+
+                                <div class="param-description">
+                                    <p>A function to use to collect values OR an Array with a name of a property in $.TableSorter.collectors and params to pass to that function</p>
+
+                                </div>
+
+                                
+                            </li>
+                            
+                        </ul>
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+
+    
+</div>
+
+                
                     <div id="method_filter" class="method item">
     <h3 class="name"><code>filter</code></h3>
 
@@ -1063,6 +1215,111 @@ var instance = $(&#39;selector&#39;).tablesorter(&#39;getInstance&#39;);</code><
                     
                 </li>
             
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type">Function</span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_TableSorter.js.html#l187"><code>src&#x2F;TableSorter.js:187</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Get the function needed to process values in the given column (strings or numbers)</p>
+
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">th</code>
+                        <span class="type">HTMLElement</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>The table heading element (a member of this.headings)</p>
+
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                        <span class="type">Function</span>:
+                    
+                
+            </div>
+        </div>
+    
+
+    
+</div>
+
+                
+                    <div id="method_getDatatypeProcessor" class="method item">
+    <h3 class="name"><code>getDatatypeProcessor</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>th</code>
+                    
+                </li>
+            
                 <li class="arg">
                     
                         <code>idx</code>
@@ -1179,111 +1436,6 @@ var instance = $(&#39;selector&#39;).tablesorter(&#39;getInstance&#39;);</code><
 </div>
 
                 
-                    <div id="method_getDatatypeProcessor" class="method item">
-    <h3 class="name"><code>getDatatypeProcessor</code></h3>
-
-    
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-            
-                <li class="arg">
-                    
-                        <code>th</code>
-                    
-                </li>
-            
-            </ul><span class="paren">)</span>
-        </div>
-    
-
-    
-        <span class="returns-inline">
-            <span class="type">Function</span>
-        </span>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    <div class="meta">
-        
-            
-                
-                <p>
-                
-                Defined in
-                
-            
-        
-        
-        <a href="../files/src_TableSorter.js.html#l187"><code>src&#x2F;TableSorter.js:187</code></a>
-        
-        </p>
-
-
-        
-
-        
-    </div>
-
-    <div class="description">
-        <p>Get the function needed to process values in the given column (strings or numbers)</p>
-
-    </div>
-
-    
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-            
-                <li class="param">
-                    
-                        <code class="param-name">th</code>
-                        <span class="type">HTMLElement</span>
-                    
-
-                    
-
-                    <div class="param-description">
-                        <p>The table heading element (a member of this.headings)</p>
-
-                    </div>
-
-                    
-                </li>
-            
-            </ul>
-        </div>
-    
-
-    
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                
-                    
-                        <span class="type">Function</span>:
-                    
-                
-            </div>
-        </div>
-    
-
-    
-</div>
-
-                
                     <div id="method_getInstance" class="method item">
     <h3 class="name"><code>getInstance</code></h3>
 
@@ -1359,111 +1511,6 @@ var instance = $(&#39;selector&#39;).tablesorter(&#39;getInstance&#39;);</code><
     <h3 class="name"><code>getValues</code></h3>
 
     
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-            
-                <li class="arg">
-                    
-                        <code>th</code>
-                    
-                </li>
-            
-            </ul><span class="paren">)</span>
-        </div>
-    
-
-    
-        <span class="returns-inline">
-            <span class="type">Array</span>
-        </span>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    <div class="meta">
-        
-            
-                
-                <p>
-                
-                Defined in
-                
-            
-        
-        
-        <a href="../files/src_TableSorter.js.html#l153"><code>src&#x2F;TableSorter.js:153</code></a>
-        
-        </p>
-
-
-        
-
-        
-    </div>
-
-    <div class="description">
-        <p>Get the values associated with the given column</p>
-
-    </div>
-
-    
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-            
-                <li class="param">
-                    
-                        <code class="param-name">th</code>
-                        <span class="type">HtmlElement</span>
-                    
-
-                    
-
-                    <div class="param-description">
-                        <p>The header element for which to get the values</p>
-
-                    </div>
-
-                    
-                </li>
-            
-            </ul>
-        </div>
-    
-
-    
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                
-                    
-                        <span class="type">Array</span>:
-                    
-                
-            </div>
-        </div>
-    
-
-    
-</div>
-
-                
-                    <div id="method_getValues" class="method item">
-    <h3 class="name"><code>getValues</code></h3>
-
-    
         <span class="paren">()</span>
     
 
@@ -1522,6 +1569,113 @@ var instance = $(&#39;selector&#39;).tablesorter(&#39;getInstance&#39;);</code><
                     
                         <span class="type">Undefined</span>:
                     
+                
+            </div>
+        </div>
+    
+
+    
+</div>
+
+                
+                    <div id="method_getValues" class="method item">
+    <h3 class="name"><code>getValues</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>th</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type">Array | Null</span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/src_TableSorter.js.html#l153"><code>src&#x2F;TableSorter.js:153</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Get the values associated with the given column</p>
+
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">th</code>
+                        <span class="type">HtmlElement | Number</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>The header element for which to get the values or the 1-based index of the column in the DOM</p>
+
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                        <span class="type">Array | Null</span>:
+                    
+                    <p>Array of values or null if th is not recognized</p>
+
                 
             </div>
         </div>
@@ -1931,7 +2085,7 @@ var instance = $(&#39;selector&#39;).tablesorter(&#39;getInstance&#39;);</code><
             
         
         
-        <a href="../files/src_TableSorter.js.html#l363"><code>src&#x2F;TableSorter.js:363</code></a>
+        <a href="../files/src_TableSorter.js.html#l396"><code>src&#x2F;TableSorter.js:396</code></a>
         
         </p>
 
