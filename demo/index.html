@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>jQuery-TableSorter Demos</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<script src="../libs/jquery/jquery.js"></script>
+	<script src="../src/TableSorter.js"></script>
+	<link rel="stylesheet" href="./css/demo.css" />
+</head>
+<body>
+	<table id="teams">
+		<tr>
+			<th>Team</th>
+			<th>Location</th>
+		</tr>
+		<tr>
+			<td>Jazz</td>
+			<td>Salt Lake City, Utah</td>
+		</tr>
+		<tr>
+			<td>Bulls</td>
+			<td>Chicago, Illinois</td>
+		</tr>
+		<tr>
+			<td>Suns</td>
+			<td>Phoenix, Arizona</td>
+		</tr>
+	</table>
+	<script>
+		var $table = new $.TableSorter('#teams', {});
+	</script>
+</body>
+</html>

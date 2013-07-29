@@ -101,7 +101,7 @@ var config = {
 		
 	},
 	teardown: function() {
-		$workspace.empty();
+		//$workspace.empty();
 	}
 };  
 module('Init', config);
@@ -1108,6 +1108,42 @@ test("date", function() {
 	});
 	strictEqual(sorter.filters.fruit.values[0], 1375053360000 + utcOffsetMs, '7/28/2013 5:10pm');
 	strictEqual(sorter.filters.fruit.values[1], 1375053360000 + utcOffsetMs, '28 Jul 2013 at 5:10pm');
+});
+module('Sort binding', config);
+test("Header", function() {
+	var $table = makeTable([
+		'.fruit Fruit | .count @data-datatype=number Count',
+		'Grape | 100',
+		'Strawberry | 9',
+		'Banana | 13'
+	]);
+	//$table.appendTo($workspace);
+	var sorter = new $.TableSorter($table, {
+		sortOnClick: true
+	});
+	$table.find('th').eq(0).triggerHandler('click');
+	var $sorted1Asc = makeTable([
+		'Fruit | @data-datatype=number Count',
+		'Banana | 13',
+		'Grape | 100',
+		'Strawberry | 9'
+	]);
+	deepEqual(getContents($table), getContents($sorted1Asc), 'columns are sorted on click');
+	strictEqual($table.find('th').eq(0).hasClass('ts-sorted-asc'), true, 'sorted heading has proper css class');
+	// click again to sort descending
+	$table.find('th').eq(0).triggerHandler('click');
+	var $sorted1Desc = makeTable([
+		'Fruit | @data-datatype=number Count',
+		'Strawberry | 9',
+		'Grape | 100',
+		'Banana | 13'
+	]);	
+	deepEqual(getContents($table), getContents($sorted1Desc), 'columns are sorted desc on second click');
+	strictEqual($table.find('th').eq(0).hasClass('ts-sorted-asc'), false, 'desc sorted heading removes asc css class');
+	strictEqual($table.find('th').eq(0).hasClass('ts-sorted-desc'), true, 'desc sorted heading has proper css class');
+	// click on another heading
+	$table.find('th').eq(1).triggerHandler('click');
+	strictEqual($table.find('th').eq(0).hasClass('ts-sorted-desc'), false, 'old column sort class removed');
 });
 
 }(jQuery));

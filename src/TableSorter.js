@@ -1,14 +1,4 @@
-(function (factory) {
-	// AMD compatibility
-	// https://github.com/umdjs/umd/blob/6c10fc0af1e1692cf430c9eb7f530d6b5a5d758b/jqueryPlugin.js
-	if (typeof define === 'function' && define.amd) {
-		// AMD environment
-		define(['jquery'], factory);
-	} else {
-		// Browser environment
-		factory(jQuery);
-	}
-}(function($) {
+(function($) {
 	"use strict";
 	/**
 	 * @module jQuery
@@ -17,6 +7,18 @@
 	function getText(node) {
 		return node ? (node.innerText || node.textContent || '') : '';
 	}
+	function debounce(delay, callback) {
+		var timeoutId;
+		return function() {
+			var args = [].slice.call(arguments);
+			clearTimeout(timeoutId);
+			timeoutId = setTimeout(function() {
+				callback.apply(null, args);
+			}, delay);
+		};
+	}
+	
+	var uid = 1;
 	
 	// Our true constructor function. See jQuery.TableSorter.prototype.initialize for documentation
 	$.TableSorter = function() {
@@ -32,7 +34,18 @@
 		zebra: false,
 		thead: 'tr:eq(0)',
 		headings: 'th',
-		rows: 'tr:gt(0)'
+		rows: 'tr:gt(0)',
+		sortOnClick: true,
+		indicateAsc: function(th) {
+			var $th = $(th);
+			$th.find('.ts-indicator').remove();
+			$th.append('<span class=ts-indicator>&#8710;</span>');
+		},
+		indicateDesc: function(th) {
+			var $th = $(th);
+			$th.find('.ts-indicator').remove();
+			$th.append('<span class=ts-indicator>&#8711;</span>');
+		}
 	};
 	$.TableSorter.prototype = {
 		/**
@@ -68,6 +81,7 @@
 		 * @param {Object} [options=TableSorter.defaultOptions] See {{#crossLink "TableSorter/options:property"}}options property{{/crossLink}} for full documentation
 		 */
 		initialize: function($element, options) {
+			this.id = uid++;
 			this.$table = $($element);
 			if (this.$table.length === 0) {
 				return;
@@ -101,11 +115,43 @@
 		 * @private
 		 */
 		_index: function() {
+			this.removeListeners();
 			this.$thead = this.$table.find(this.options.thead);
 			this.headings = this._getHeadings(this.options.headings);
 			this.rows = this._getRows(this.options.rows);
 			this.zebra(this.options.zebra);			
 			this._valueCache = [];
+			if (this.options.sortOnClick) {
+				this.addListeners();
+			}
+		},
+		removeListeners: function() {
+			$(this.headings).off('click.' + this.id);
+		},
+		addListeners: function() {
+			var sorter = this;
+			var $headings = $(sorter.headings);
+			$headings.on('click.' + sorter.id, function() {				
+				var th = this;
+				var $th = $(th);
+				var isAsc = $th.hasClass('ts-sorted-asc');
+				$headings.removeClass('ts-sorted-asc').removeClass('ts-sorted-desc');
+				if (isAsc) {					
+					sorter.sort(th, -1);
+					$th.addClass('ts-sorted-desc');
+					if (sorter.options.indicateDesc) {
+						sorter.options.indicateDesc(th);
+					}
+				}
+				else {
+					sorter.sort(th);
+					$th.addClass('ts-sorted-asc');
+					if (sorter.options.indicateAsc) {
+						sorter.options.indicateAsc(th);
+					}
+				}
+			});
+			return this;
 		},
 		/**
 		 * Trigger indexing after something in the table changes
@@ -259,8 +305,10 @@
 			var table, i, len, idx, resortedRows = [];
 			// 1 = ascending, -1 = descending
 			direction = direction && (/desc|-1/i).test(direction) ? -1 : 1;			
-			// detach table element from DOM while sorting because it is faster: http://jsperf.com/to-detach-or-not-to-detach
-			this.$table.replaceWith(this.$placeholder);
+			// detach table element from DOM while sorting because it is faster: 
+			// http://jsperf.com/to-detach-or-not-to-detach
+			this.$table.before(this.$placeholder);
+			this.$table.detach();
 			table = this.$table.get(0);
 			// TODO: handle one or more tbodies and thead if needed?
 			var values = this.getValues(th);
@@ -271,7 +319,7 @@
 			}
 			this.rows = resortedRows;
 			this.zebra(this.options.zebra);
-			// re-attache table element into the DOM
+			// re-attache table element into the DOM			
 			this.$placeholder.replaceWith(this.$table);
 			return this;
 		},
@@ -497,7 +545,7 @@
 			return new RegExp(code, 'i');
 		}
 	};
-	util.timeParsers = [
+	$.TableSorter.dateUtils.timeParsers = [
 		{
 			// 8:32pm
 			matcher: util.makePattern("(?:\\b|T| )(_H12_)(?:\\:(_MIN_)(?:\\:(_SEC_))?)? ?(_AMPM_)"),
@@ -521,7 +569,7 @@
 			}
 		}
 	];
-	util.dateParsers = [
+	$.TableSorter.dateUtils.dateParsers = [
 		{
 			// 7/28/2013
 			matcher: util.makePattern("^(_MONTH_)( ?[\\/-] ?)(_DAY_)\\2(_YEAR_)"),
@@ -677,4 +725,4 @@
 		});
 	};
 	
-}));  
+})(jQuery);  
